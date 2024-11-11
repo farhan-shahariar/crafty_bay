@@ -70,6 +70,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_carousel_widget:
+    dependency: "direct main"
+    description:
+      name: flutter_carousel_widget
+      sha256: "6473e6df04bfafea70efd58251fe5945d5aa8d19461575c1b9d83643f08e0c77"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.1.0"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -115,6 +123,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.2"
+  item_count_number_button:
+    dependency: "direct main"
+    description:
+      name: item_count_number_button
+      sha256: b83ce20dd013e3004bb66a0f4240d20b392d9bcf43dbbea1ce03b3220eee6a13
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.9.2"
   leak_tracker:
     dependency: transitive
     description:
