@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../utils/app_colors.dart';
-import '../utils/assets_path.dart';
 
 class ProductCard extends StatelessWidget {
   const ProductCard({
-    super.key, required this.productModel,
+    super.key,
+    required this.productModel,
   });
 
   final ProductModel productModel;
@@ -17,7 +17,9 @@ class ProductCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Get.to(() => const ProductDetailsScreen());
+        Get.to(() => ProductDetailsScreen(
+              productId: productModel.id!,
+            ));
       },
       child: Card(
         elevation: 3,
@@ -32,13 +34,13 @@ class ProductCard extends StatelessWidget {
                 width: 160,
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                    color: AppColors.themeColor.withOpacity(0.1),
+                    color: Colors.grey.withOpacity(0.1),
                     borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(10),
                       topRight: Radius.circular(10),
                     ),
-                    image: const DecorationImage(
-                        image: AssetImage(AssetsPath.dummyProductImg),
+                    image: DecorationImage(
+                        image: NetworkImage(productModel.image ?? ''),
                         fit: BoxFit.scaleDown)),
               ),
               Padding(

@@ -1,11 +1,13 @@
-import 'package:crafty_bay/presentation/ui/utils/assets_path.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 
 class ProductImageSlider extends StatelessWidget {
   const ProductImageSlider({
     super.key,
+    required this.sliderUrl,
   });
+
+  final List<String> sliderUrl;
 
   @override
   Widget build(BuildContext context) {
@@ -15,16 +17,13 @@ class ProductImageSlider extends StatelessWidget {
           showIndicator: true,
           slideIndicator: CircularSlideIndicator(),
           viewportFraction: 1),
-      items: [1, 2, 3, 4, 5].map((i) {
+      items: sliderUrl.map((imageUrl) {
         return Builder(
           builder: (BuildContext context) {
             return Container(
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                   image: DecorationImage(
-                      scale: 4.8,
-                      image: AssetImage(
-                        AssetsPath.dummyProductImg,
-                      )),
+                      scale: 4.8, image: NetworkImage(imageUrl)),
                   color: Colors.blueGrey),
             );
           },

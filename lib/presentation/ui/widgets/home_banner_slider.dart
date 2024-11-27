@@ -35,46 +35,40 @@ class HomeBannerSlider extends StatelessWidget {
                     width: MediaQuery.of(context).size.width,
                     margin: const EdgeInsets.symmetric(horizontal: 4.0),
                     decoration: BoxDecoration(
-                        color: AppColors.themeColor,
-                        borderRadius: BorderRadius.circular(8)),
-                    alignment: Alignment.center,
-                    child: Row(
-                      children: [
-                        const Placeholder(
-                          fallbackHeight: 100,
-                          fallbackWidth: 100,
-                        ),
-                        Expanded(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                slider.price ?? '',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .titleLarge
-                                    ?.copyWith(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w600),
-                              ),
-                              const SizedBox(
-                                height: 16,
-                              ),
-                              SizedBox(
-                                width: 100,
-                                child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    foregroundColor: AppColors.themeColor,
-                                    backgroundColor: Colors.white,
-                                  ),
-                                  onPressed: () {},
-                                  child: const Text('Buy Now'),
-                                ),
-                              )
-                            ],
+                      color: AppColors.themeColor,
+                      borderRadius: BorderRadius.circular(8),
+                      image: DecorationImage(
+                          image: NetworkImage(slider.image ?? ''),
+                          fit: BoxFit.cover),
+                    ),
+                    alignment: Alignment.centerLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(slider.price ?? '',
+                              style: TextStyle(
+                                  fontSize: 19,
+                                  color: Colors.black.withOpacity(0.85),
+                                  fontWeight: FontWeight.w600)),
+                          const SizedBox(
+                            height: 16,
                           ),
-                        ),
-                      ],
+                          SizedBox(
+                            width: 100,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                foregroundColor: AppColors.themeColor,
+                                backgroundColor: Colors.white,
+                              ),
+                              onPressed: () {},
+                              child: const Text('Buy Now'),
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                   );
                 },

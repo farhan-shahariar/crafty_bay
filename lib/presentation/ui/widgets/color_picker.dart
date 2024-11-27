@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 
+import '../utils/app_colors.dart';
+
 class ColorPicker extends StatefulWidget {
   const ColorPicker(
-      {super.key, required this.colors, required this.onColorSelected});
+      {super.key, required this.color, required this.onColorSelected});
 
-  final List<Color> colors;
-  final Function(Color) onColorSelected;
+  final List<String> color;
+  final Function(String) onColorSelected;
 
   @override
   State<ColorPicker> createState() => _ColorPickerState();
 }
 
 class _ColorPickerState extends State<ColorPicker> {
-  late Color _selectedColor = widget.colors.first;
-
+  late String _selectedSize = widget.color.first;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -28,26 +29,30 @@ class _ColorPickerState extends State<ColorPicker> {
         ),
         Wrap(
           spacing: 8,
-          children: widget.colors.map((item) {
+          children: widget.color.map((item) {
             return GestureDetector(
               onTap: () {
-                _selectedColor = item;
+                _selectedSize = item;
                 widget.onColorSelected(item);
                 setState(() {});
               },
-              child: CircleAvatar(
-                radius: 16,
-                backgroundColor: item,
-                child: _selectedColor == item
-                    ? const Icon(
-                        Icons.check,
-                        color: Colors.white,
-                      )
-                    : null,
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                decoration: BoxDecoration(
+                  border: Border.all(),
+                  color: _selectedSize == item ? AppColors.themeColor : null,
+                ),
+                child: Text(
+                  item,
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: _selectedSize == item ? Colors.white : null,
+                  ),
+                ),
               ),
             );
           }).toList(),
-        ),
+        )
       ],
     );
   }
