@@ -2,6 +2,8 @@ class Urls {
   static const String _baseUrl = 'https://ecommerce-api.codesilicon.com/api';
   static const String listProductSliderUrl = '$_baseUrl/ListProductSlider';
   static const String categoryListUrl = '$_baseUrl/CategoryList';
+  static const String readProfileUrl = '$_baseUrl/ReadProfile';
+  static const String addToCart = '$_baseUrl/CreateCartList';
   static String productListUrl(String remark) =>
       '$_baseUrl/ListProductByRemark/$remark';
   static String productListByCategory(int categoryId) =>

@@ -1,8 +1,10 @@
 import 'package:crafty_bay/data/model/product_details_model.dart';
+import 'package:crafty_bay/presentation/state_holders/add_to_cart_controller.dart';
 import 'package:crafty_bay/presentation/state_holders/auth_controller.dart';
 import 'package:crafty_bay/presentation/state_holders/product_details_controller.dart';
 import 'package:crafty_bay/presentation/ui/screens/email_verification_screen.dart';
 import 'package:crafty_bay/presentation/ui/utils/app_colors.dart';
+import 'package:crafty_bay/presentation/ui/utils/snack_message.dart';
 import 'package:crafty_bay/presentation/ui/widgets/centered_circular_progress_indicator.dart';
 import 'package:crafty_bay/presentation/ui/widgets/size_picker.dart';
 import 'package:crafty_bay/product_image_slider.dart';
@@ -22,6 +24,9 @@ class ProductDetailsScreen extends StatefulWidget {
 }
 
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
+   String _selectedColor = '';
+   String _selectedSize = '';
+   int quantity = 1;
   @override
   void initState() {
     super.initState();
@@ -96,13 +101,17 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 // ),
                 ColorPicker(
                     color: productModel.color!.split(','),
-                    onColorSelected: (size) {}),
+                    onColorSelected: (selectedColor) {
+                      _selectedColor = selectedColor;
+                    }),
                 const SizedBox(
                   height: 16,
                 ),
                 SizePicker(
                     size: productModel.size!.split(','),
-                    onSizeSelected: (size) {}),
+                    onSizeSelected: (selectedSize) {
+                      _selectedSize = selectedSize;
+                    }),
                 const SizedBox(
                   height: 16,
                 ),
@@ -149,12 +158,14 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
           width: 4,
         ),
         ItemCount(
-          initialValue: 1,
+          initialValue: quantity,
           minValue: 1,
           maxValue: 20,
           decimalPlaces: 0,
           color: AppColors.themeColor.withOpacity(0.5),
-          onChanged: (value) {},
+          onChanged: (value) {
+            quantity = value.toInt();
+          },
         ),
       ],
     );
@@ -237,17 +248,36 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
           ),
           SizedBox(
               width: 120,
-              child: ElevatedButton(
-                  onPressed: _onTapAddToCart, child: const Text('Add To Cart')))
+              child: GetBuilder<AddToCartController>(
+                builder: (addToCartController) {
+                  return Visibility(
+                    visible: !addToCartController.inProgress,
+                    replacement: const CenteredCircularProgressIndicator(),
+                    child: ElevatedButton(
+                        onPressed: _onTapAddToCart, child: const Text('Add To Cart')),
+                  );
+                }
+              ))
         ],
       ),
     );
   }
 
   Future<void> _onTapAddToCart() async {
-    bool isLoggedInUser = await Get.find<AuthController>().isLoggedInUser();
+    bool isLoggedInUser = Get.find<AuthController>().isLoggedInUser();
     if (isLoggedInUser) {
-    } else {
+      final result = await Get.find<AddToCartController>().addToCart(widget.productId, _selectedColor, _selectedSize, quantity);
+      if(result){
+        if(mounted){
+          showSnackBarMessage('Added to cart', context);
+        }
+      }else{
+        if(mounted){
+          showSnackBarMessage(Get.find<AddToCartController>().errorMessage!, context, true);
+        }
+      }
+    }
+    else {
       Get.to(() => const EmailVerificationScreen());
     }
   }

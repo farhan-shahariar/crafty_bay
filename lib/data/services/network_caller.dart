@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:crafty_bay/data/model/network_response.dart';
+import 'package:crafty_bay/presentation/state_holders/auth_controller.dart';
 import 'package:logger/logger.dart';
 import 'package:http/http.dart';
 import 'package:logger/web.dart';
@@ -10,11 +11,11 @@ class NetworkCaller {
 
   NetworkCaller({required this.logger});
 
-  Future<NetworkResponse> getRequest({required String url}) async {
+  Future<NetworkResponse> getRequest({required String url, String? token}) async {
     try {
       Uri uri = Uri.parse(url);
       _requestLog(url, {}, {}, '');
-      Response response = await get(uri, headers: {'token': ''});
+      Response response = await get(uri, headers: {'token': '${token ?? AuthController.accessToken}'});
       if (response.statusCode == 200) {
         _responseLog(
             url, response.statusCode, response.body, response.headers, true);
@@ -40,10 +41,10 @@ class NetworkCaller {
       {required String url, Map<String, dynamic>? body}) async {
     try {
       Uri uri = Uri.parse(url);
-      _requestLog(url, {}, body ?? {}, '');
+      _requestLog(url, {}, body ?? {}, AuthController.accessToken ?? '');
       Response response = await post(uri,
-          body: body,
-          headers: {'token': '', 'content-type': 'application/json'});
+          body: jsonEncode(body),
+          headers: {'token': '${AuthController.accessToken}', 'content-type': 'application/json'});
       if (response.statusCode == 200) {
         _responseLog(
             url, response.statusCode, response.body, response.headers, true);
